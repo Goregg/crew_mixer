@@ -1,0 +1,19 @@
+[project]
+name = "crew-mixer"
+version = "0.1.0"
+description = "An open source scheduler for multi day volunteer programms."
+readme = "README.md"
+requires-python = ">=3.13"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.0",
+]
+
+[project.scripts]
+crew-mixer = "crew_mixer:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13"]
+build-backend = "uv_build"
