@@ -1,0 +1,75 @@
+{
+    "schema_version": 1,
+    "event": {
+        "name": "Test",
+        "starting_day": "2420-04-20",
+        "days": [
+            {
+                "date_index": 0,
+                "day_type": "scheduled",
+                "together_text": null
+            }
+        ],
+        "volunteers": [
+            {
+                "id": "d18dca1b-de26-447d-b4dd-d315254697bb",
+                "first_name": "VolunteerA",
+                "last_name": "Bond",
+                "gender": "male"
+            },
+            {
+                "id": "ecfec597-1f8d-4d7c-8ca1-a6a900caadd7",
+                "first_name": "VolunteerB",
+                "last_name": "Degree",
+                "gender": "female"
+            }
+        ],
+        "pairs": [
+            {
+                "id": "07d25522-74ac-4e91-ac65-c395bfa303fd",
+                "volunteer_a_id": "d18dca1b-de26-447d-b4dd-d315254697bb",
+                "volunteer_b_id": "ecfec597-1f8d-4d7c-8ca1-a6a900caadd7"
+            }
+        ],
+        "areas": [
+            {
+                "id": "14131cbd-ad49-4655-85a0-a6c1a8693080",
+                "name": "Infield",
+                "color": "Red"
+            }
+        ],
+        "shifts": [
+            {
+                "id": "02f7d627-ea53-467d-ba7f-8ac52883793c",
+                "day_index": 0,
+                "start": "10:00:00",
+                "end": "10:00:00",
+                "shift_type": "midday",
+                "area_id": "14131cbd-ad49-4655-85a0-a6c1a8693080",
+                "desired_volunteers": 2
+            }
+        ],
+        "markers": [
+            {
+                "id": "7ccc586c-a2c1-4a60-9313-387d976b94df",
+                "day_index": 0,
+                "start": "10:00:00",
+                "end": "10:00:00",
+                "note": "TestMarker"
+            }
+        ]
+    },
+    "plan": {
+        "assignments": [
+            {
+                "shift_id": "02f7d627-ea53-467d-ba7f-8ac52883793c",
+                "volunteer_ids": [
+                    "d18dca1b-de26-447d-b4dd-d315254697bb",
+                    "ecfec597-1f8d-4d7c-8ca1-a6a900caadd7"
+                ]
+            }
+        ],
+        "score": 0,
+        "created_at": "2026-09-11T15:40:36.133811"
+    }
+}
