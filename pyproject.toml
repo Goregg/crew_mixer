@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 license = "GPL-3.0-or-later"
 authors = [{ name = "Goregg" }]
 dependencies = [
+    "ortools>=9.15.6755",
     "pydantic>=2.13.4",
 ]
 
@@ -27,7 +28,6 @@ crew-mixer = "crew_mixer.main:main"
 # Enable specific rules for docstring checking
 select = [
     "D",    # pydocstyle
-    "PD",   # pandas-vet
     "W",
     "E",
     "F"

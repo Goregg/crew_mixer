@@ -3,16 +3,16 @@ import pathlib
 
 from pydantic import ValidationError
 
-import crew_mixer.domain.data_model as model
+import crew_mixer.domain.data_model as m
 
 
-def save_project(project: model.Project, filename: pathlib.Path):
+def save_project(project: m.Project, filename: pathlib.Path):
     project_json = project.model_dump_json(indent=4)
     with open(filename, "w", encoding="utf-8") as f:
         f.write(project_json)
 
 
-def load_project(filename: pathlib.Path) -> model.Project:
+def load_project(filename: pathlib.Path) -> m.Project:
     with open(filename, "r", encoding="utf-8") as f:
         project_json = f.read()
 
@@ -35,7 +35,7 @@ def load_project(filename: pathlib.Path) -> model.Project:
 
     # transform the json to a project
     try:
-        project = model.Project.model_validate_json(project_json)
+        project = m.Project.model_validate_json(project_json)
     except ValidationError as err:
         raise ValueError("Loaded project does not fit the schema!") from err
 

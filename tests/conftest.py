@@ -2,53 +2,85 @@ import uuid
 import pytest
 from datetime import date, datetime, time, timezone
 
-import crew_mixer.domain.data_model as model
+import crew_mixer.domain.data_model as m
 
 
 @pytest.fixture
-def example_project_noplan() -> model.Project:
-    """Create a fixture example project usable in the tests."""
-    volunteer_a_id = uuid.uuid4()
-    volunteer_b_id = uuid.uuid4()
-    area_infield_id = uuid.uuid4()
-    shift_id = uuid.uuid4()
-
-    return model.Project(
-        event=model.Event(
+def example_project_empty() -> m.Project:
+    """Create a fixture empty project usable in the tests."""
+    return m.Project(
+        event=m.Event(
             name="Test",
             starting_day=date(year=2420, month=4, day=20),
-            days=[model.Day(date_index=0, day_type=model.DayType.SCHEDULED)],
+            days=[],
+            volunteers=[],
+            pairs=[],
+            areas=[],
+            shifts=[],
+            markers=[],
+        )
+    )
+
+
+@pytest.fixture
+def example_project_noplan() -> m.Project:
+    """Create a fixture example project usable in the tests."""
+    volunteer_ids = [uuid.uuid4() for _ in range(12)]
+    area_infield_id = uuid.uuid4()
+    shift_ids = [uuid.uuid4() for _ in range(12)]  # 3 days a 4 shifts
+
+    return m.Project(
+        event=m.Event(
+            name="Test",
+            starting_day=date(year=2420, month=4, day=20),
+            days=[
+                m.Day(day_index=0, day_type=m.DayType.SCHEDULED),
+                m.Day(day_index=1, day_type=m.DayType.SCHEDULED),
+                m.Day(day_index=2, day_type=m.DayType.SCHEDULED),
+                m.Day(
+                    day_index=3,
+                    day_type=m.DayType.TOGETHER,
+                    together_text="test_together",
+                ),
+            ],
             volunteers=[
-                model.Volunteer(
-                    id=volunteer_a_id,
-                    first_name="VolunteerA",
+                m.Volunteer(
+                    id=volunteer_ids[i],
+                    first_name=f"Volunteer {i}",
                     last_name="Bond",
-                    gender=model.Gender.M,
-                ),
-                model.Volunteer(
-                    id=volunteer_b_id,
-                    first_name="VolunteerB",
-                    last_name="Degree",
-                    gender=model.Gender.W,
-                ),
+                    gender=m.Gender.M,
+                )
+                for i in range(12)
             ],
             pairs=[
-                model.Pair(volunteer_a_id=volunteer_a_id, volunteer_b_id=volunteer_b_id)
+                m.Pair(
+                    volunteer_a_id=volunteer_ids[0], volunteer_b_id=volunteer_ids[1]
+                ),
+                m.Pair(
+                    volunteer_a_id=volunteer_ids[2], volunteer_b_id=volunteer_ids[3]
+                ),
             ],
-            areas=[model.Area(id=area_infield_id, name="Infield", color="Red")],
+            areas=[m.Area(id=area_infield_id, name="Infield", color="Red")],
             shifts=[
-                model.Shift(
-                    id=shift_id,
-                    day_index=0,
+                m.Shift(
+                    id=shift_ids[d * 4 + s],
+                    day_index=d,
                     start=time(10, 0),
                     end=time(15, 0),
-                    shift_type=model.ShiftType.MIDDAY,
+                    shift_type=[
+                        m.ShiftType.MORNING,
+                        m.ShiftType.MIDDAY,
+                        m.ShiftType.EVENING,
+                        m.ShiftType.NIGHT,
+                    ][s],
                     area_id=area_infield_id,
-                    desired_volunteers=2,
+                    desired_volunteers=3,
                 )
+                for d in range(3)
+                for s in range(4)
             ],
             markers=[
-                model.Marker(
+                m.Marker(
                     day_index=0,
                     start=time(15, 0),
                     end=time(17, 0),
@@ -60,12 +92,12 @@ def example_project_noplan() -> model.Project:
 
 
 @pytest.fixture
-def example_project_plan(example_project_noplan) -> model.Project:
+def example_project_plan(example_project_noplan) -> m.Project:
     """Create a fixture example project usable in the tests."""
     project = example_project_noplan
-    project.plan = model.Plan(
+    project.plan = m.Plan(
         assignments=[
-            model.Assignment(
+            m.Assignment(
                 shift_id=project.event.shifts[0].id,
                 volunteer_ids=[
                     project.event.volunteers[0].id,

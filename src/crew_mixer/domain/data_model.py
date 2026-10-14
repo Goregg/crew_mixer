@@ -11,7 +11,7 @@ class DayType(str, Enum):
 
 
 class Day(BaseModel):
-    date_index: int
+    day_index: int
     day_type: DayType
     together_text: str | None = None
 
@@ -96,12 +96,23 @@ class Plan(BaseModel):
 
 
 class ProblemCode(str, Enum):
-    NO_CODE = "nocode"
+    NOT_ENOUGH_VOLUNTEERS = (
+        "There are more slots for shifts specified than there are volunteers!"
+    )
+    TOO_MANY_VOLUNTEERS = "There are more volunteers then slots in the shifts!"
+    NO_PLAN_FOUND = (
+        "The solver did not find a plan which satiesfies all hard constraints!"
+    )
 
 
 class Problem(BaseModel):
     code: ProblemCode
     data: str
+
+
+class SolveResult(BaseModel):
+    plan: Plan | None
+    problems: list[Problem]
 
 
 class Project(BaseModel):
